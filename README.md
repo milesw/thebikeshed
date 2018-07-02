@@ -4,7 +4,7 @@ This repository contains the Shopify theme created for The Bike Shed. The theme 
 
 ## Setup
 
-The theme has been set up to use [Slate 0.x](https://shopify.github.io/slate/) for build and deployment. For reference, fully-built versions theme have been committed as [/dist](https://github.com/milesw/thebikeshed/tree/master/dist) and as [theme.zip](https://github.com/milesw/thebikeshed/blob/master/upload/thebikeshed.zip).
+The theme has been set up to use [Slate 0.x](https://shopify.github.io/slate/) for build and deployment. For reference, fully-built versions of the theme have been committed as [/dist](https://github.com/milesw/thebikeshed/tree/master/dist) and as [theme.zip](https://github.com/milesw/thebikeshed/blob/master/upload/thebikeshed.zip).
 
 ### Setting up Slate
 
