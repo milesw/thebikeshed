@@ -177,6 +177,10 @@
             {% endif %}
           </div>
         {% endif %}
+      
+      	{% if template.suffix == 'bike' %}
+			    {% include 'bike-decal-form' %}
+      	{% endif %}
 
         <div class="payment-buttons payment-buttons--{{ section.settings.add_to_cart_button_size }}">
           <button type="submit" name="add" id="addToCart-{{ section.id }}" class="{{ btn_class }} btn--add-to-cart{% if section.settings.enable_payment_button %} btn--secondary-accent{% endif %}">
@@ -329,6 +333,24 @@
             "label": "Large"
           }
         ]
+      },
+      {
+        "type": "header",
+        "content": "Bike decals"
+      },
+      {
+        "type": "text",
+        "id": "bike_decal_text_property",
+        "label": "Decal text field",
+        "info": "Name of the order field for the customer's decal text.",
+        "default": "Decal text"
+      },
+      {
+        "type": "text",
+        "id": "bike_decal_color_property",
+        "label": "Decal color field",
+        "info": "Name of the order field when a customer specifies a decal color.",
+        "default": "Decal color"
       }
     ]
   }

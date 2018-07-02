@@ -1,11 +1,11 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Supply",
-    "theme_author": "Shopify",
-    "theme_version": "6.0.0",
-    "theme_documentation_url": "https://help.shopify.com/manual/using-themes/themes-by-shopify/supply",
-    "theme_support_url": "https://support.shopify.com/"
+    "theme_name": "The Bike Shed",
+    "theme_author": "Miles Worthington",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https://docs.google.com/document/d/18CAinbEYubsAfyy6hFeTDa8GIdTSm4xS1oJsQSgEH6E/edit?usp=sharing",
+    "theme_support_url": "https://docs.google.com/document/d/18CAinbEYubsAfyy6hFeTDa8GIdTSm4xS1oJsQSgEH6E/edit?usp=sharing"
   },
   {
     "name": "Colors",

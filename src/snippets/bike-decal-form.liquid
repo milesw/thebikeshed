@@ -1,0 +1,53 @@
+{% comment %}
+
+  Template for bike decal line item properties on product pages.
+
+  @see assets/scripts/components/bike-decal-form.js
+
+{% endcomment %}
+
+{% assign decal_include_property = 'Include decal' %}
+{% assign decal_text_property = section.settings.bike_decal_text_property %}
+{% assign decal_color_property = section.settings.bike_decal_color_property %}
+
+<div class="bike-decal-form" data-bike-decal-form>
+
+  <label class="bike-decal-toggle">
+    <input type="checkbox" name="properties[{{ decal_include_property }}]" checked="checked" data-toggle /> 
+    Include a FREE personalized frame decal
+  </label>
+
+  <div class="bike-decal-fields" data-fields>
+
+    <div class="bike-decal-field">
+      <label for="bike-decal-label" class="bike-decal-label">
+        What color decal?
+      </label>
+      <select id="bike-decal-color" name="properties[{{ decal_color_property }}]" data-color>
+        <option value="">Let us choose</option>
+        <option value="Brown">Brown</option>
+        <option value="Black">Black</option>
+        <option value="Blue">Blue</option>
+        <option value="Red">Red</option>
+        <option value="Green">Green</option>
+      </select>
+    </div>
+
+    <div class="bike-decal-field">
+      <label for="bike-decal-text" class="bike-decal-label">
+        What should the decal say? (max 30 letters)
+      </label>
+      <input id="bike-decal-text" type="text" name="properties[{{ decal_text_property }}]" maxlength="30" value="The Bike Shed" placeholder="How about your name? Or your personal motto?" data-text />
+    </div>
+
+    <div class="bike-decal-field">
+      <label for="bike-decal-text" class="bike-decal-label">
+        Preview
+      </label>
+      <div id="bike-decal-preview" class="bike-decal-preview" data-preview> 
+        {% comment %} Preview text gets appended here. {% endcomment %}
+      </div>
+    </div>
+    
+  </div>
+</div>

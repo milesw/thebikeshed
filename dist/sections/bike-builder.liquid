@@ -1,0 +1,144 @@
+{% comment %}
+
+  Section template for the Bike Builder page.
+
+  @see templates/page.bike-builder.liquid
+  @see assets/scripts/components/bike-builder.js
+  
+{% endcomment %}
+
+<div class="bike-builder" data-bike-builder>
+  <table class="full">
+
+    <thead>
+      <tr>
+        <td class="bike-builder-column--component">
+          Component
+        </td>
+        <td class="bike-builder-column--product">
+          Product
+        </td>
+        <td class="bike-builder-column--options">
+          Options
+        </td>
+        <td class="bike-builder-column--details">
+          Details
+        </td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for block in section.blocks %}
+        <tr class="bike-builder-component" data-bike-component>
+
+          <td>
+            <div class="bike-builder-component-name">
+              {{ block.settings.title }}
+            </div>
+          </td>
+
+          <td>
+            <div class="bike-builder-component-product">
+              <select id="component-product-{{ block.id }}" required data-product-select>
+                <option value="">
+                  - Choose a product -
+                </option>
+                {% for product in collections[block.settings.collection].products %}
+                  <option value="{{ product.handle }}">
+                    {{ product.title }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </td>
+
+          <td>
+            <div class="hidden" data-product-options>
+              <div class="bike-builder-product-options">
+                {% comment %} Single option selectors get appended here. {% endcomment %}
+                <select id="component-variant-{{ block.id }}" class="hidden" data-variant-select>
+                  {% comment %} Product options get appended here. {% endcomment %}
+                </select>
+              </div>
+
+              <div class="bike-builder-product-quantity">
+                <div class="selector-wrapper">
+                  <label for="component-quantity-{{ block.id }}">
+                    Quantity
+                  </label>
+                  <select id="component-quantity-{{ block.id }}" data-quantity-select>
+                    {% for number in (1..10) %}
+                      <option value="{{ number }}">
+                        {{ number }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <p class="bike-builder-product-error hidden" data-product-error>
+              Sorry, we couldn't load information for that product.
+            </p>
+          </td>
+
+          <td>
+            <div class="bike-builder-product-details hidden" data-product-details>
+              <a class="bike-builder-product-link" target="_blank" data-product-link>
+                <img class="bike-builder-product-image" data-product-image />
+                <p class="bike-builder-product-price" data-product-price></p>
+                Details
+              </a>
+            </div>
+            <p class="bike-builder-product-unavailable hidden" data-product-unavailable>
+              Sorry, this option is currently unavailable.
+            </p>
+          </td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan="4">
+          <div class="bike-builder-cart" data-cart>
+            Total: <span data-cart-total>$0.00</span> (<span data-cart-quantity>0 items</span>)
+
+            <span class="right">
+              <a class="btn disabled" href="#" data-checkout-button>
+                Order
+              </a>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tfoot>
+    
+  </table>
+</div>
+
+{% schema %}
+  {
+    "name": "Bike Builder",
+    "blocks" : [
+      {
+        "type": "component",
+        "name": "Component",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Component name",
+            "info": "e.g. Frameset, Crank, Pedals"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "Choose the collection containing products for this component"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
