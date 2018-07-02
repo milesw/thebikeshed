@@ -12,7 +12,7 @@
 var afterResize=(function(){var t={};return function(callback,ms,uniqueId){if(!uniqueId){uniqueId="Don't call this twice without a uniqueId";}if(t[uniqueId]){clearTimeout(t[uniqueId]);}t[uniqueId]=setTimeout(callback,ms);};})();
 
 //* Ajaxify.js.liquid *//
-
+{% if settings.ajax_cart_method != 'page' %}
 /*============================================================================
   (c) Copyright 2015 Shopify Inc. Author: Carson Shold (@cshold). All Rights Reserved.
 
@@ -280,7 +280,7 @@ var ajaxifyShopify = (function(module, $) {
       btnClass: null,
       wrapperClass: null,
       useCartTemplate: false,
-      moneyFormat: '${{amount}}',
+      moneyFormat: '{% raw %}${{amount}}{% endraw %}',
       disableAjaxCart: false,
       enableQtySelectors: true,
       prependDrawerTo: 'body',
@@ -399,9 +399,9 @@ var ajaxifyShopify = (function(module, $) {
     $addToCart.addClass('flip-front').wrap('<div class="flip"></div>');
 
     // Write a (hidden) Checkout button, a loader, and the extra view cart button
-    var checkoutBtn = $('<a href="/cart" class="flip-back" style="background-color: #C00; color: #fff;" id="flip-checkout">' + "Checkout" + '</a>').addClass($btnClass),
+    var checkoutBtn = $('<a href="/cart" class="flip-back" style="background-color: #C00; color: #fff;" id="flip-checkout">' + {{ 'cart.general.checkout' | t | json }} + '</a>').addClass($btnClass),
         flipLoader = $('<span class="ajaxifyCart-loader"></span>'),
-        flipExtra = $('<div class="flip-extra">' + "or" + ' <a href="#" class="flip-cart">' + "View Cart" + ' (<span></span>)</a></div>');
+        flipExtra = $('<div class="flip-extra">' + {{ 'cart.general.or' | t | json }} + ' <a href="#" class="flip-cart">' + {{ 'cart.general.view_cart' | t | json }} + ' (<span></span>)</a></div>');
 
     // Append checkout button and loader
     checkoutBtn.insertAfter($addToCart);
@@ -450,7 +450,7 @@ var ajaxifyShopify = (function(module, $) {
     $modalOverlay.on('click', hideModal);
 
     // Create a close modal button
-    $modalContainer.prepend('<button class="ajaxifyCart--close" title="' + "Close Cart" + '">' + "Close Cart" + '</button>');
+    $modalContainer.prepend('<button class="ajaxifyCart--close" title="' + {{ 'cart.general.close_cart' | t | json }} + '">' + {{ 'cart.general.close_cart' | t | json }} + '</button>');
     $closeCart = $('.ajaxifyCart--close');
     $closeCart.on('click', hideModal);
 
@@ -756,7 +756,7 @@ var ajaxifyShopify = (function(module, $) {
 
     // Show empty cart
     if (cart.item_count === 0) {
-      $cartContainer.append('<h2>' + "Your cart is currently empty." + '</h2><span class="cart--continue-message">' + "Continue browsing \u003ca href=\"\/collections\/all\"\u003ehere\u003c\/a\u003e." + '</span><span class="cart--cookie-message">' + "Enable cookies to use the shopping cart" + '</span>');
+      $cartContainer.append('<h2>' + {{ 'cart.general.empty' | t | json }} + '</h2><span class="cart--continue-message">' + {{ 'cart.general.continue_browsing_html' | t | json }} + '</span><span class="cart--cookie-message">' + {{ 'cart.general.cookies_required' | t | json }} + '</span>');
 
       switch (settings.method) {
         case 'modal':
@@ -1164,7 +1164,7 @@ var ajaxifyShopify = (function(module, $) {
   return module;
 
 }(ajaxifyShopify || {}, jQuery));
-
+{% endif %}
 
 
 /* ================ SLATE ================ */
@@ -1454,7 +1454,9 @@ timber.init = function () {
   timber.responsiveVideos();
   timber.toggleFilters();
 
-  
+  {% if settings.collection_sidebar_filters == 'groups' %}
+  timber.sortFilters();
+  {% endif %}
 };
 
 timber.mobileNav = function () {
@@ -1888,24 +1890,28 @@ timber.sortFilters = function () {
 
 timber.formatMoney = function (val) {
 
-  
+  {% comment %}
+  Unless this store uses multiple currencies,
+    if we apply a special style to cents,
+    we will wrap them in a sup (superscript) element.
+  {% endcomment %}
 
-  
+  {% if settings.superscript_decimals %}
   if (moneyFormat.indexOf('money') === -1) {
-    if ((moneyFormat.indexOf('{{amount}}') > -1) && (moneyFormat.indexOf('.') === -1) ) {
+    if ((moneyFormat.indexOf({% raw %}'{{amount}}'{% endraw %}) > -1) && (moneyFormat.indexOf('.') === -1) ) {
     val = val.replace('.', '<sup>') + '</sup>';
   }
-      else if ((moneyFormat.indexOf('{{ amount }}') > -1) && (moneyFormat.indexOf('.') === -1) ) {
+      else if ((moneyFormat.indexOf({% raw %}'{{ amount }}'{% endraw %}) > -1) && (moneyFormat.indexOf('.') === -1) ) {
   val = val.replace('.', '<sup>') + '</sup>';
 }
-      else if (moneyFormat.indexOf('{{ amount_with_comma_separator }}') > -1) {
+      else if (moneyFormat.indexOf({% raw %}'{{ amount_with_comma_separator }}'{% endraw %}) > -1) {
   val = val.replace(',', '<sup>') + '</sup>';
 }
-else if (moneyFormat.indexOf('{{amount_with_comma_separator}}') > -1) {
+else if (moneyFormat.indexOf({% raw %}'{{amount_with_comma_separator}}'{% endraw %}) > -1) {
   val = val.replace(',', '<sup>') + '</sup>';
 }
     }
-
+{% endif %}
 
 return val;
 };
@@ -1914,14 +1920,14 @@ timber.formatSaleTag = function (val) {
   // If not using multiple currencies
   if (moneyFormat.indexOf('money') === -1) {
     // If we use amount
-    if ( (moneyFormat.replace(/\s/g, '').indexOf('{{amount}}') > -1) && (moneyFormat.indexOf('.') === -1) ) {
+    if ( (moneyFormat.replace(/\s/g, '').indexOf({% raw %}'{{amount}}'{% endraw %}) > -1) && (moneyFormat.indexOf('.') === -1) ) {
       // If there are no cents, remove decimals
       if ( val.indexOf('.00') > -1 ) {
         return val.replace('.00', '')
       }
     }
     // If we use amount_with_comma_separator
-    else if (moneyFormat.replace(/\s/g, '').indexOf('{{amount_with_comma_separator}}') > -1) {
+    else if (moneyFormat.replace(/\s/g, '').indexOf({% raw %}'{{amount_with_comma_separator}}'{% endraw %}) > -1) {
       // If there are no cents, remove decimals
       if ( val.indexOf(',00') > -1 ) {
         return val.replace(',00', '')
@@ -2254,7 +2260,7 @@ theme.Product = (function() {
 
     if (this.settings.ajaxCartMethod != 'page') {
       ajaxifyShopify.init({
-        method: 'modal',
+        method: '{{ settings.ajax_cart_method }}',
         wrapperClass: 'wrapper',
         formSelector: '#addToCartForm-' + sectionId,
         addToCartSelector: '#addToCart-' + sectionId,
@@ -2303,9 +2309,9 @@ theme.Product = (function() {
     addQuantityButtons: function(){
       if (this.settings.selectors.$quantityElements){
         this.settings.selectors.$quantityElements.show();
-        
+        {% if settings.ajax_cart_method != 'page' %}
           this.qtySelectors();
-        
+        {% endif %}
       }
 
     },
@@ -2482,7 +2488,7 @@ theme.Product = (function() {
         if (variant.available) {
           // We have a valid product variant, so enable the submit button
           this.settings.selectors.$addToCart.removeClass('disabled').prop('disabled', false);
-          this.settings.selectors.$addToCartText.html("Add to Cart");
+          this.settings.selectors.$addToCartText.html({{ 'products.product.add_to_cart' | t | json }});
           $(this.settings.selectors.$shopifyPaymentButton, this.$container).show();
 
           this.settings.selectors.$variantQuantity.removeClass('is-visible');
@@ -2512,7 +2518,7 @@ theme.Product = (function() {
 
           // Variant is sold out, disable the submit button
           this.settings.selectors.$addToCart.addClass('disabled').prop('disabled', true);
-          this.settings.selectors.$addToCartText.html("Sold Out");
+          this.settings.selectors.$addToCartText.html({{ 'products.product.sold_out' | t | json }});
           $(this.settings.selectors.$shopifyPaymentButton, this.$container).hide();
 
           this.settings.selectors.$variantQuantity.removeClass('is-visible');
@@ -2544,8 +2550,8 @@ theme.Product = (function() {
 
             customPriceFormat = ' <span aria-hidden="true">' + customPrice + '</span>';
             customPriceFormat += ' <span aria-hidden="true"><s>' + comparePrice + '</s></span>';
-            customPriceFormat += ' <span class="visually-hidden"><span class="visually-hidden">Regular price</span> ' + a11yComparePrice + '</span>';
-            customPriceFormat += ' <span class="visually-hidden"><span class="visually-hidden">Sale price</span> ' + a11yPrice + '</span>';
+            customPriceFormat += ' <span class="visually-hidden"><span class="visually-hidden">{{ "products.general.regular_price" | t }}</span> ' + a11yComparePrice + '</span>';
+            customPriceFormat += ' <span class="visually-hidden"><span class="visually-hidden">{{ "products.general.sale_price" | t }}</span> ' + a11yPrice + '</span>';
           }
         }
         this.settings.selectors.$productPrice.html(customPriceFormat);
@@ -2554,7 +2560,7 @@ theme.Product = (function() {
         if ( variant.compare_at_price > variant.price ) {
           var priceSaving = timber.formatSaleTag( Shopify.formatMoney(variant.compare_at_price - variant.price, moneyFormat) );
           // priceSaving += ' (' + ( (variant.compare_at_price - variant.price)*100/(variant.compare_at_price) ).toFixed(0) + '%)';
-          this.settings.selectors.$comparePrice.html("Save [$]".replace('[$]', priceSaving)).show();
+          this.settings.selectors.$comparePrice.html({{ 'products.general.save_html' | t: saved_amount: '[$]' | json }}.replace('[$]', priceSaving)).show();
         } else {
           this.settings.selectors.$comparePrice.hide();
         }

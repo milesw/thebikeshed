@@ -1,4 +1,4 @@
-
+{% if settings.ajax_cart_method != 'page' %}
 
 /*============================================================================
   Shopify Ajax Cart
@@ -39,9 +39,9 @@ $gutter: 24px;
   Add your theme colors in here, or create new styles.
     - If creating new styles, you may have to restyle text, headers and links
 ==============================================================================*/
-$colorBody: #f3f3f3;
-$colorTextBody: #858585;
-$colorBorder: #dedede;
+$colorBody: {{ settings.color_body_bg }};
+$colorTextBody: {{ settings.color_body_text }};
+$colorBorder: {{ settings.color_borders }};
 
 /*============================================================================
   Dependency-free breakpoint mixin
@@ -759,7 +759,7 @@ form[action^="/cart/add"] {
 
 }
 
-
+{% endif %}
 
 /*============================================================================
   Shopify Timber v1.4.0
@@ -846,9 +846,9 @@ $breakpoint-has-pull:  ('medium', 'medium-down', 'large');
 ==============================================================================*/
 
 // Supply Theme Colors
-$colorPrimary: #9c756f;
-$colorSecondary: #f3f3f3;
-$colorAccent: #545454;
+$colorPrimary: {{ settings.color_primary }};
+$colorSecondary: {{ settings.color_secondary }};
+$colorAccent: {{ settings.color_accent }};
 
 // Button colors
 $colorBtnPrimary: $colorPrimary;
@@ -867,28 +867,28 @@ $colorLink: $colorPrimary;
 $colorLinkHover: lighten($colorPrimary, 15%);
 
 // General colors
-$colorBody: #f3f3f3;
-$colorTextBody: #858585;
-$colorHeaders: #2f2f2f;
+$colorBody: {{ settings.color_body_bg }};
+$colorTextBody: {{ settings.color_body_text }};
+$colorHeaders: {{ settings.color_heading_text }};
 
 // Border colors
-$colorBorder: #dedede;
+$colorBorder: {{ settings.color_borders }};
 
 // Site Header
-$headerBackground: #ffffff;
-$headerText: #545454;
-$headerButtonAndSearch: #f3f3f3;
+$headerBackground: {{ settings.color_header_background }};
+$headerText: {{ settings.color_header_text }};
+$headerButtonAndSearch: {{ settings.color_header_cart_search }};
 
 // Nav background
-$colorNav: #9c756f;
-$colorNavText: #ffffff;
+$colorNav: {{ settings.color_nav_bg }};
+$colorNavText: {{ settings.color_nav_text }};
 
 // Mobile Nav Bar
 $mobileNavBarHeight: 50px;
 
 // Site Footer
-$colorFooterBg: #ffffff;
-$colorFooterText: #545454;
+$colorFooterBg: {{ settings.color_footer_bg }};
+$colorFooterText: {{ settings.color_footer_text }};
 
 // Helper colors
 $disabledGrey: #f6f6f6;
@@ -914,74 +914,48 @@ $passwordPageUseBgImage: true;
 /*============================================================================
   Get font-families from theme settings
 ==============================================================================*/
-@font-face {
-  font-family: Roboto;
-  font-weight: 400;
-  font-style: normal;
-  src: url("https://fonts.shopifycdn.com/roboto/roboto_n4.da808834c2315f31dd3910e2ae6b1a895d7f73f5.woff2?&hmac=fc93048d67b5919b29c4e947343d0a9599adb89fe18272b77057db493cffc489") format("woff2"),
-       url("https://fonts.shopifycdn.com/roboto/roboto_n4.a512c7b68cd7f12c72e1a5fd58e7f7315c552e93.woff?&hmac=be64ada5dc9e0332d117b70bf19b9fefd0340f9022a8349b78d28787f6783825") format("woff");
-}
 
-@font-face {
-  font-family: Lato;
-  font-weight: 700;
-  font-style: normal;
-  src: url("https://fonts.shopifycdn.com/lato/lato_n7.f0037142450bd729bdf6ba826f5fdcd80f2787ba.woff2?&hmac=9ef5ea50325d92640afa94080ad7ad6c2edadf72abdacc00b499572ada1f69c5") format("woff2"),
-       url("https://fonts.shopifycdn.com/lato/lato_n7.50161a3d4f05d049b7407d86c5a8834e4d6e29bf.woff?&hmac=2b91989514c8e0dce4d7eb812f6eb03f573f5583b28ab1e30b76da85bba44a35") format("woff");
-}
+{%- assign header_font = settings.type_header_font -%}
+{%- assign base_font = settings.type_base_font -%}
+{%- assign accent_font = settings.type_accent_font -%}
+{%- assign base_font_bold = base_font | font_modify: 'weight', 'bolder' -%}
+{%- assign base_font_italic = base_font | font_style: 'italic' -%}
+{%- assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic' -%}
 
+{{ header_font | font_face }}
+{{ base_font | font_face }}
+{{ accent_font | font_face }}
 
-@font-face {
-  font-family: Roboto;
-  font-weight: 700;
-  font-style: normal;
-  src: url("https://fonts.shopifycdn.com/roboto/roboto_n7.51ede27d5b58491d9cf07ad184108da52fef80b4.woff2?&hmac=8bb259a3f49ea88d41c462dcb44f2cec856d8661f982e17fbec39180f6186d44") format("woff2"),
-       url("https://fonts.shopifycdn.com/roboto/roboto_n7.1babbb6a27f91b14216bafa40bf222e08f6999f4.woff?&hmac=2dc8169e45bac2afac11d0d3aaf8d06b4454742dfab2d1c2987406d80e19ec4f") format("woff");
-}
-
-@font-face {
-  font-family: Roboto;
-  font-weight: 400;
-  font-style: normal;
-  src: url("https://fonts.shopifycdn.com/roboto/roboto_n4.da808834c2315f31dd3910e2ae6b1a895d7f73f5.woff2?&hmac=fc93048d67b5919b29c4e947343d0a9599adb89fe18272b77057db493cffc489") format("woff2"),
-       url("https://fonts.shopifycdn.com/roboto/roboto_n4.a512c7b68cd7f12c72e1a5fd58e7f7315c552e93.woff?&hmac=be64ada5dc9e0332d117b70bf19b9fefd0340f9022a8349b78d28787f6783825") format("woff");
-}
-
-@font-face {
-  font-family: Roboto;
-  font-weight: 700;
-  font-style: italic;
-  src: url("https://fonts.shopifycdn.com/roboto/roboto_i7.9c922c35bb84952cfb17e8c1d42e440e75aa8ccf.woff2?&hmac=2296c2d51e7aa2388655ee9b2f9ae6bca9a27d7203f147def895e600c965e48d") format("woff2"),
-       url("https://fonts.shopifycdn.com/roboto/roboto_i7.c50b5683f5731edb8040ff2110a54947108434de.woff?&hmac=b2ac5182195fbae3d14433e409ef69ddbc692155f1d68bb5fc2b51457d48acf8") format("woff");
-}
-
+{{ base_font_bold | font_face }}
+{{ base_font_italic | font_face }}
+{{ base_font_bold_italic | font_face }}
 
 
 // Header Font
-$headerFontStack: "Times New Roman", Times, serif;
-$headerFontWeight: 700;
-$headerFontStyle: normal;
+$headerFontStack: {{ header_font.family }}, {{ header_font.fallback_families}};
+$headerFontWeight: {{ header_font.weight }};
+$headerFontStyle: {{ header_font.style }};
 
 // Body Font
-$baseFontStack:  Roboto, sans-serif;
-$baseFontSize: 14px;
-$baseFontStyle: normal;
-$baseFontWeight: 400;
-$baseFontBoldWeight: 700;
+$baseFontStack:  {{ base_font.family }}, {{ base_font.fallback_families}};
+$baseFontSize: {{ settings.type_base_size }};
+$baseFontStyle: {{ base_font.style }};
+$baseFontWeight: {{ base_font.weight }};
+$baseFontBoldWeight: {{ base_font_bold.weight | default: 700 }};
 
 // Navigation and Button Font
-$accentFontStack: Lato, sans-serif;
-$accentFontWeight: 700;
-$accentFontStyle: normal;
+$accentFontStack: {{ accent_font.family }}, {{ accent_font.fallback_families}};
+$accentFontWeight: {{ accent_font.weight }};
+$accentFontStyle: {{ accent_font.style }};
 
 // Icons
 @font-face {
   font-family: "icons";
-  src: url('//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/icons.eot?13938722314168679674');
-  src: url('//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/icons.eot?13938722314168679674#iefix') format("embedded-opentype"),
-       url('//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/icons.woff?13938722314168679674') format("woff"),
-       url('//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/icons.ttf?13938722314168679674') format("truetype"),
-       url('//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/icons.svg?13938722314168679674#timber-icons') format("svg");
+  src: url('{{ 'icons.eot' | asset_url }}');
+  src: url('{{ 'icons.eot' | asset_url }}#iefix') format("embedded-opentype"),
+       url('{{ 'icons.woff' | asset_url }}') format("woff"),
+       url('{{ 'icons.ttf' | asset_url }}') format("truetype"),
+       url('{{ 'icons.svg' | asset_url }}#timber-icons') format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -1652,10 +1626,10 @@ html, body {
   Simply upload a file called 'bg.jpg' and delete lines as necessary.
 ==============================================================================*/
 // body {
-  // background: url(//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/bg.jpg?13938722314168679674) 0 0 repeat scroll;
-  // background: url(//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/bg.jpg?13938722314168679674) 0 0 no-repeat scroll;
-  // background: url(//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/bg.jpg?13938722314168679674) 0 0 repeat fixed;
-  // background: url(//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/bg.jpg?13938722314168679674) 0 0 no-repeat fixed;
+  // background: url({{ 'bg.jpg' | asset_url }}) 0 0 repeat scroll;
+  // background: url({{ 'bg.jpg' | asset_url }}) 0 0 no-repeat scroll;
+  // background: url({{ 'bg.jpg' | asset_url }}) 0 0 repeat fixed;
+  // background: url({{ 'bg.jpg' | asset_url }}) 0 0 no-repeat fixed;
 
   // Fullscreen background
   // @include prefix('background-size', 'cover');
@@ -1764,7 +1738,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $headerFontStack;
   font-weight: $headerFontWeight;
   font-style: $headerFontStyle;
-  
+  {% if settings.type_header_transform %}
+  text-transform: uppercase;
+  {% endif %}
 
   a {
     text-decoration: none;
@@ -2136,10 +2112,10 @@ html input[disabled] {
   font-family: $accentFontStack;
   font-weight: $accentFontWeight;
   font-style: $accentFontStyle;
-  font-size: 14px;
-  
+  font-size: {{ settings.type_button_size }};
+  {% if settings.type_button_transform %}
   text-transform: uppercase;
-  
+  {% endif %}
   @include transition(background-color 0.2s ease-out);
 
   &.btn--add-to-cart {
@@ -2149,7 +2125,7 @@ html input[disabled] {
 
   &.btn--small {
     padding: 8px 12px 7px;
-    font-size: 14px - 2;
+    font-size: {{ settings.type_button_size }} - 2;
   }
 
   &.btn--wide {
@@ -2483,7 +2459,7 @@ select {
           appearance: none;
   background-position: right center;
   background: {
-    image: url('//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/arrow-down.svg?13938722314168679674');
+    image: url('{{ 'arrow-down.svg' | asset_url }}');
     repeat: no-repeat;
     position: right 10px center;
     color: $colorBody;
@@ -2759,11 +2735,11 @@ label.error {
   }
 
   a {
-    color: #545454;
+    color: {{ settings.color_footer_social_link }};
     @include transition(color 0.2s ease-out);
 
     &:hover {
-      color: darken(#545454, 15%);
+      color: darken({{ settings.color_footer_social_link }}, 15%);
       @include transition(color 0.05s ease-in);
     }
   }
@@ -3160,7 +3136,7 @@ $shareBorderColor: #ececec;
     font-family: $accentFontStack;
     font-weight: $accentFontWeight;
     font-style: $accentFontStyle;
-    font-size: 14px;
+    font-size: {{ settings.type_button_size }};
     line-height: normal;
   }
   input:-ms-input-placeholder {
@@ -3253,10 +3229,10 @@ $shareBorderColor: #ececec;
   font-family: $accentFontStack;
   font-weight: $accentFontWeight;
   font-style: $accentFontStyle;
-  font-size: 14px;
-  
+  font-size: {{ settings.type_navigation_size }};
+  {% if settings.type_navigation_transform %}
   text-transform: uppercase;
-  
+  {% endif %}
   cursor: default;
 
   li {
@@ -3279,7 +3255,7 @@ $shareBorderColor: #ececec;
   button {
     background: none;
     border: 0;
-    font-size: 14px;
+    font-size: {{ settings.type_navigation_size }};
     text-transform: uppercase;
   }
 
@@ -3457,10 +3433,10 @@ $shareBorderColor: #ececec;
   font-family: $accentFontStack;
   font-weight: $accentFontWeight;
   font-style: $accentFontStyle;
-  font-size: 14px;
-  
+  font-size: {{ settings.type_navigation_size }};
+  {% if settings.type_navigation_transform %}
   text-transform: uppercase;
-  
+  {% endif %}
   cursor: default;
 
   li {
@@ -5159,7 +5135,7 @@ img.mfp-img {
 
 .spr-badge-starrating,
 .spr-icon {
-  color: #e5c649;
+  color: {{ settings.product_reviews_star_color }};
   font-size: inherit;
 }
 
@@ -5193,7 +5169,7 @@ img.mfp-img {
   width: 100%;
 
   @if $passwordPageUseBgImage {
-    background-image: url(//cdn.shopify.com/s/files/1/0072/5434/3798/t/4/assets/password-page-background.jpg?13938722314168679674);
+    background-image: url({{ 'password-page-background.jpg' | asset_url }});
     background-size: cover;
     background-repeat: no-repeat;
     color: #ffffff;
@@ -5765,7 +5741,7 @@ $color-blankstate-background: rgba($colorTextBody, 0.1);
   }
 
   .icon-pin {
-    font-size: 14px * 0.8;
+    font-size: {{ settings.type_button_size }} * 0.8;
   }
 }
 

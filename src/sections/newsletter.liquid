@@ -1,0 +1,44 @@
+<hr>
+<div class="text-centre">
+  <div class="section-header text-center">
+    {% if section.settings.heading != blank %}
+      <label for="Email" class="h1">{{ section.settings.heading | escape }}</label>
+    {% endif %}
+    {% unless section.settings.subtext == blank %}
+      {{ section.settings.subtext }}
+    {% endunless %}
+  </div>
+  {% include 'newsletter-form' %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Newsletter",
+    "class": "newsletter-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Subscribe to our newsletter"
+      },
+      {
+        "type": "richtext",
+        "id": "subtext",
+        "label": "Subtext",
+        "default": "<p>Promotions, new products and sales. Directly to your inbox.</p>"
+      },
+      {
+        "type": "paragraph",
+        "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Newsletter",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}
