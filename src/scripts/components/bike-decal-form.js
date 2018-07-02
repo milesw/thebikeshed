@@ -5,7 +5,7 @@
  *
  * Dependencies: jQuery
  *
- * @see product.liquid
+ * @see snippets/product-template.liquid
  */
 theme.BikeDecalForm = (function() {
 
